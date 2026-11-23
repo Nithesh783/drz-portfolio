@@ -8,6 +8,7 @@ import {
   getProjectAssetUrl,
   type Project,
 } from "@/lib/projects-api";
+import { SocialLinks } from "@/components/SocialLinks";
 
 function escapeHtml(value: string): string {
   return value
@@ -170,51 +171,57 @@ export async function HomeSections() {
       "Portfolio projects could not be loaded from the API; project sections are left empty.",
       error,
     );
-    return homeSections.map((section) => (
-      <PortfolioSection
-        key={section.id}
-        markup={
-          projectSectionIds.has(section.id)
-            ? addProjectSectionClass(section.markup)
-            : section.markup
-        }
-      />
-    ));
+    return [
+      ...homeSections.map((section) => (
+        <PortfolioSection
+          key={section.id}
+          markup={
+            projectSectionIds.has(section.id)
+              ? addProjectSectionClass(section.markup)
+              : section.markup
+          }
+        />
+      )),
+      <SocialLinks key="social-links" />,
+    ];
   }
 
   let projectPosition = 0;
-  return homeSections.flatMap((section) => {
-    if (projectSectionIds.has(section.id)) {
-      const position = projectPosition++;
-      const project = homepageProjects[position];
-      if (project === undefined) {
-        throw new Error("Homepage API returned fewer projects than available layouts.");
-      }
-      if (project === null) {
+  return [
+    ...homeSections.flatMap((section) => {
+      if (projectSectionIds.has(section.id)) {
+        const position = projectPosition++;
+        const project = homepageProjects[position];
+        if (project === undefined) {
+          throw new Error("Homepage API returned fewer projects than available layouts.");
+        }
+        if (project === null) {
+          return [
+            <PortfolioSection
+              key={section.id}
+              markup={addProjectSectionClass(section.markup)}
+            />,
+          ];
+        }
         return [
           <PortfolioSection
-            key={section.id}
-            markup={addProjectSectionClass(section.markup)}
+            key={project.id}
+            markup={applyProjectData(
+              section.markup,
+              project,
+              position === 0,
+              position,
+            )}
           />,
         ];
       }
       return [
         <PortfolioSection
-          key={project.id}
-          markup={applyProjectData(
-            section.markup,
-            project,
-            position === 0,
-            position,
-          )}
+          key={section.id}
+          markup={section.markup}
         />,
       ];
-    }
-    return [
-      <PortfolioSection
-        key={section.id}
-        markup={section.markup}
-      />,
-    ];
-  });
+    }),
+    <SocialLinks key="social-links" />,
+  ];
 }
