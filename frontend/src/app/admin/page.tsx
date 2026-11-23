@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AdminDashboard } from "@/components/AdminDashboard";
+import { parseAdminTab } from "@/lib/admin-tabs";
 
 export const dynamic = "force-dynamic";
 
@@ -10,8 +11,7 @@ export default async function AdminPage({
   searchParams: Promise<{ tab?: string | string[] }>;
 }) {
   const { tab } = await searchParams;
-  const initialTab =
-    tab === "homepage" || tab === "enquiries" ? tab : "projects";
+  const initialTab = parseAdminTab(tab);
 
   const cookie = (await cookies()).get("portfolio_admin");
   if (!cookie) redirect("/admin/login");

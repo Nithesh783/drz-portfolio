@@ -5,6 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  adminDashboardHref,
+  parseAdminTab,
+  type AdminTab,
+} from "@/lib/admin-tabs";
+import {
   messageDismissDelay,
   useAutoDismissMessage,
 } from "@/hooks/useAutoDismissMessage";
@@ -33,7 +38,6 @@ interface Enquiry {
 }
 
 type EnquiryStatusFilter = "all" | Enquiry["status"];
-type AdminTab = "projects" | "enquiries" | "homepage";
 const enquiryStatusOrder: Record<Enquiry["status"], number> = {
   New: 0,
   "In Progress": 1,
@@ -82,11 +86,6 @@ function getStoredImageName(imageUrl: string) {
   } catch {
     return encodedName;
   }
-}
-
-function getAdminTabFromSearch(search: string): AdminTab {
-  const tab = new URLSearchParams(search).get("tab");
-  return tab === "homepage" || tab === "enquiries" ? tab : "projects";
 }
 
 async function readError(response: Response): Promise<string> {
@@ -251,7 +250,9 @@ export function AdminDashboard({ initialTab }: { initialTab: AdminTab }) {
 
   useEffect(() => {
     const syncActiveTab = () =>
-      setActiveTab(getAdminTabFromSearch(window.location.search));
+      setActiveTab(
+        parseAdminTab(new URLSearchParams(window.location.search).get("tab")),
+      );
     syncActiveTab();
     window.addEventListener("popstate", syncActiveTab);
     return () => window.removeEventListener("popstate", syncActiveTab);
@@ -918,7 +919,7 @@ export function AdminDashboard({ initialTab }: { initialTab: AdminTab }) {
           <div className={styles.sidebarHeader}>
             <Link
               className={styles.brand}
-              href="/admin?tab=homepage"
+              href={adminDashboardHref}
               aria-label="Durozen admin homepage"
               onClick={(event) => {
                 if (

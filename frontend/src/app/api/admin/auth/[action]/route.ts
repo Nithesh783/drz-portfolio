@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { adminDashboardHref } from "@/lib/admin-tabs";
 
 type RouteContext = {
   params: Promise<{ action: string }>;
@@ -20,7 +21,7 @@ type LoginErrorCode = "invalid_credentials" | "invalid_request" | "unavailable";
 function redirectLogin(error?: LoginErrorCode): NextResponse {
   const destination = error
     ? `/admin/login/?error=${encodeURIComponent(error)}`
-    : "/admin/?tab=homepage";
+    : adminDashboardHref;
   return new NextResponse(null, {
     status: 303,
     headers: {

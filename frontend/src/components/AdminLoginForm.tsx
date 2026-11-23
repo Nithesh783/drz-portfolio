@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAdminToast } from "@/hooks/useAdminToast";
 import { AdminToast } from "@/components/AdminToast";
+import { adminDashboardHref } from "@/lib/admin-tabs";
 import styles from "./AdminLogin.module.css";
 
 export function AdminLoginForm({ initialError }: { initialError?: string }) {
@@ -43,7 +44,7 @@ export function AdminLoginForm({ initialError }: { initialError?: string }) {
         );
       }
 
-      router.replace("/admin/?tab=homepage");
+      router.replace(adminDashboardHref);
     } catch (reason) {
       showError(
         reason instanceof Error ? reason.message : "Unable to sign in.",
