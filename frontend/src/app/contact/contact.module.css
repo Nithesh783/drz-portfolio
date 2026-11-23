@@ -1,0 +1,273 @@
+.page {
+  min-height: 100vh;
+  background: #eceef1;
+  color: #33363c;
+}
+
+.siteHeader {
+  border-bottom: 1px solid #dfe2e6;
+  background: #fff;
+}
+
+.footerMark {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #8588ef, #6cc5e9);
+  color: #fff;
+  font-weight: 700;
+}
+
+.main {
+  width: min(100%, 1360px);
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.contactCard {
+  display: grid;
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+  overflow: hidden;
+  border: 1px solid #dfe2e6;
+  background: #fff;
+  box-shadow: 0 12px 36px rgb(34 42 55 / 6%);
+}
+
+.introPanel {
+  position: relative;
+  display: flex;
+  min-height: 630px;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 40px 32px 26px;
+  background:
+    radial-gradient(circle at 82% 18%, rgb(139 135 236 / 23%), transparent 29%),
+    radial-gradient(circle at 13% 88%, rgb(106 189 232 / 18%), transparent 33%),
+    linear-gradient(145deg, #f8f8ff, #edf5f8);
+}
+
+.routePattern {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.routePattern::before,
+.routePattern::after {
+  position: absolute;
+  inset: -20%;
+  border: 1px solid rgb(123 133 210 / 20%);
+  border-radius: 44% 56% 61% 39% / 50% 38% 62% 50%;
+  content: "";
+  transform: rotate(-24deg);
+}
+
+.routePattern::after {
+  inset: 8% -35% 12% 18%;
+  border-color: rgb(106 189 232 / 25%);
+  border-radius: 58% 42% 34% 66% / 44% 56% 44% 56%;
+  transform: rotate(28deg);
+}
+
+.routePin,
+.routeNode {
+  position: absolute;
+  z-index: 1;
+  border: 5px solid rgb(139 135 236 / 24%);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 16px rgb(75 88 150 / 12%);
+}
+
+.routePin {
+  top: 31%;
+  right: 19%;
+  width: 20px;
+  height: 20px;
+}
+
+.routeNode {
+  right: 37%;
+  bottom: 23%;
+  width: 14px;
+  height: 14px;
+  border-width: 4px;
+}
+
+.introContent,
+.introFooter {
+  position: relative;
+  z-index: 1;
+}
+
+.introContent {
+  max-width: 460px;
+  margin-top: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 13px;
+  color: #777ee0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.introContent h1 {
+  max-width: 440px;
+  margin: 0;
+  color: #34373e;
+  font-size: clamp(36px, 4.4vw, 58px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+}
+
+.introText {
+  max-width: 390px;
+  margin: 22px 0 0;
+  color: #707780;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.projectsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  color: #5e6dd2;
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.projectsLink span {
+  font-size: 16px;
+  transition: transform 160ms ease;
+}
+
+.projectsLink:hover span {
+  transform: translate(2px, -2px);
+}
+
+.introFooter {
+  display: flex;
+  max-width: 390px;
+  align-items: center;
+  gap: 13px;
+  padding-top: 26px;
+  border-top: 1px solid rgb(132 143 179 / 20%);
+}
+
+.footerMark {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.introFooter p {
+  margin: 0;
+  color: #858b95;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.formPanel {
+  align-self: stretch;
+  padding: 30px clamp(24px, 3vw, 36px) 26px;
+  background: #fff;
+}
+
+.formPanel h2 {
+  margin: 0;
+  color: #34373e;
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+
+.formIntro {
+  margin: 10px 0 0;
+  color: #858b95;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .contactCard {
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  }
+
+  .introPanel {
+    min-height: 600px;
+    padding: 40px 30px 26px;
+  }
+
+  .formPanel {
+    padding: 30px 24px 28px;
+  }
+}
+
+@media (max-width: 700px) {
+  .main {
+    padding: 12px;
+  }
+
+  .introFooter {
+    display: none;
+  }
+
+  .contactCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .introPanel {
+    min-height: 340px;
+    padding: 28px 20px 20px;
+  }
+
+  .introContent {
+    margin-top: 24px;
+  }
+
+  .introContent h1 {
+    max-width: 500px;
+    font-size: clamp(34px, 9vw, 48px);
+  }
+
+  .formPanel {
+    padding: 22px 16px 24px;
+  }
+}
+
+@media (max-width: 420px) {
+  .main {
+    padding: 8px;
+  }
+
+  .introPanel {
+    padding-inline: 16px;
+  }
+
+  .formPanel {
+    padding: 20px 14px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projectsLink span {
+    transition: none;
+  }
+
+  .projectsLink:hover span {
+    transform: none;
+  }
+}

@@ -1,0 +1,228 @@
+.form {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  max-width: 640px;
+  margin: 20px auto 0;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 14px;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+  color: #505661;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #dfe2e6;
+  border-radius: 3px;
+  outline: 0;
+  background: #fff;
+  color: #363a42;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.field input,
+.field select {
+  height: 38px;
+  padding: 0 11px;
+}
+
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%23566d74' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  cursor: pointer;
+}
+
+.field textarea {
+  min-height: 96px;
+  padding: 10px 11px;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #a4a9b1;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: #9a9df0;
+  box-shadow: 0 0 0 3px rgb(129 137 238 / 14%);
+}
+
+.field input:invalid:not(:placeholder-shown) {
+  border-color: #c96a6a;
+}
+
+.requiredMarker {
+  color: #c65a5a;
+  font-weight: 700;
+}
+
+.messageField {
+  margin-top: 14px;
+}
+
+.formError {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.budgetField {
+  min-width: 0;
+  margin: 14px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.budgetField legend {
+  padding: 0;
+  color: #505661;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.budgetOptions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.budgetOption {
+  position: relative;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.budgetOption input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.budgetOption > span {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: 1px solid #dfe2e6;
+  border-radius: 6px;
+  color: #505661;
+  background: #fff;
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: center;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.budgetOption:hover > span {
+  border-color: #9a9df0;
+}
+
+.budgetOption:has(input:checked) > span {
+  border-color: #8588ef;
+  color: #fff;
+  background: linear-gradient(110deg, #8b87ec, #6abde8);
+}
+
+.budgetOption:has(input:focus-visible) > span {
+  outline: 3px solid rgb(129 137 238 / 30%);
+  outline-offset: 2px;
+}
+
+.formActions {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.submitButton {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  flex: 0 0 auto;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 3px;
+  background: linear-gradient(110deg, #8b87ec, #6abde8);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  transition: filter 160ms ease, opacity 160ms ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  filter: brightness(0.96);
+}
+
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.submitButton:focus-visible {
+  outline: 3px solid rgb(129 137 238 / 32%);
+  outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+  .fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .budgetOptions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field input,
+  .field select,
+  .field textarea,
+  .budgetOption > span,
+  .submitButton {
+    transition: none;
+  }
+}

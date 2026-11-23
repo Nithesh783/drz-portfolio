@@ -1,0 +1,30 @@
+{
+  "name": "@portfolio-drz/frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:styles": "node scripts/build-styles.mjs",
+    "dev": "npm run build:styles && concurrently --kill-others-on-fail -n styles,next \"node scripts/build-styles.mjs --watch\" \"next dev --port 3000\"",
+    "build": "npm run build:styles && next build",
+    "start": "next start --port 3000",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "html-react-parser": "^6.1.9",
+    "next": "16.4.6",
+    "autoprefixer": "^10.6.2",
+    "postcss": "^8.5.33",
+    "postcss-import": "^17.0.1",
+    "postcss-nested": "^9.0.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^10.15.0",
+    "eslint-config-next": "16.4.6",
+    "typescript": "^5.9.3"
+  }
+}

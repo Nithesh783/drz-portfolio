@@ -1,0 +1,27 @@
+.DS_Store
+node_modules/
+.env
+.env.*
+!.env.example
+!.env.docker.example
+.next/
+frontend/.next/
+backend/dist/
+backend/src/generated/
+backend/uploads/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+.cache/
+*.icloud
+frontend/src/styles/generated/
+# Local logs and private key material
+*.log
+*.log.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519

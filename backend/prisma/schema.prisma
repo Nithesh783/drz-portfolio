@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Project {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  projectType      String    @map("project_type") @db.Text
+  projectName      String    @map("project_name") @db.Text
+  description      String    @db.Text
+  projectLink      String    @map("project_link") @db.Text
+  images           String[]  @db.Text
+  backgroundImage  String?   @map("background_image") @db.Text
+  homepagePosition Int?      @unique @map("homepage_position") @db.SmallInt
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  enquiries        Enquiry[]
+
+  @@map("projects")
+}
+
+model Enquiry {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String   @db.Text
+  companyName     String?  @map("company_name") @db.Text
+  email           String   @db.Text
+  phone           String   @db.Text
+  serviceRequired String   @default("General enquiry") @map("service_required") @db.Text
+  budgetRange     String?  @map("budget_range") @db.Text
+  message         String   @db.Text
+  projectId       String?  @map("project_id") @db.Uuid
+  project         Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  status          String   @default("New") @db.Text
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("enquiries")
+}
+
+model AdminAccount {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String   @db.Text
+  email        String   @unique @db.Text
+  passwordHash String   @map("password_hash") @db.Text
+  role         String   @default("admin") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("admin_accounts")
+}

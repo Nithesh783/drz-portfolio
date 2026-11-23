@@ -1,0 +1,138 @@
+
+services:
+  db:
+    image: postgres:16-alpine
+    command: ["postgres", "-p", "${POSTGRES_PORT}"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER in .env.docker}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env.docker}
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB in .env.docker}
+      POSTGRES_PORT: ${POSTGRES_PORT:?Set POSTGRES_PORT in .env.docker}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'pg_isready -p "$${POSTGRES_PORT}" -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+  rustfs:
+    image: rustfs/rustfs:1.0.6
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      RUSTFS_ACCESS_KEY: ${RUSTFS_ACCESS_KEY:?Set RUSTFS_ACCESS_KEY in .env.docker}
+      RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY:?Set RUSTFS_SECRET_KEY in .env.docker}
+      RUSTFS_VOLUMES: /data/rustfs0
+      RUSTFS_ADDRESS: 0.0.0.0:9000
+      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
+      RUSTFS_CONSOLE_ENABLE: "true"
+    volumes:
+      - rustfs_data:/data
+    healthcheck:
+      test:
+        [
+          CMD,
+          sh,
+          -ec,
+          "curl --fail --silent http://127.0.0.1:9000/health && curl --fail --silent http://127.0.0.1:9001/rustfs/console/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    ports:
+      - "127.0.0.1:${RUSTFS_HOST_PORT:-9000}:9000"
+      - "127.0.0.1:${RUSTFS_CONSOLE_HOST_PORT:-9001}:9001"
+
+  db-migrate:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: build
+      args:
+        PRISMA_GENERATE_DATABASE_URL: "postgresql://build:build@${POSTGRES_HOST}:${POSTGRES_PORT}/build?schema=public"
+    command:
+      ["npm", "run", "db:migrate", "--workspace=@portfolio-drz/backend"]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - tools
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: runtime
+      args:
+        PRISMA_GENERATE_DATABASE_URL: "postgresql://build:build@${POSTGRES_HOST}:${POSTGRES_PORT}/build?schema=public"
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:?Set NODE_ENV in .env.docker}
+      API_PORT: ${BACKEND_PORT:?Set BACKEND_PORT in .env.docker}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env.docker}
+      JWT_EXPIRES_IN_MINUTES: ${JWT_EXPIRES_IN_MINUTES:?Set JWT_EXPIRES_IN_MINUTES in .env.docker}
+      FRONTEND_ORIGIN: ${WEB_ORIGIN:?Set WEB_ORIGIN in .env.docker}
+      PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?Set NEXT_PUBLIC_API_URL in .env.docker}
+      RUSTFS_ENDPOINT: ${RUSTFS_ENDPOINT:?Set RUSTFS_ENDPOINT in .env.docker}
+      RUSTFS_ACCESS_KEY: ${RUSTFS_ACCESS_KEY:?Set RUSTFS_ACCESS_KEY in .env.docker}
+      RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY:?Set RUSTFS_SECRET_KEY in .env.docker}
+      RUSTFS_BUCKET: ${RUSTFS_BUCKET:?Set RUSTFS_BUCKET in .env.docker}
+      RUSTFS_REGION: ${RUSTFS_REGION:?Set RUSTFS_REGION in .env.docker}
+      RUSTFS_OBJECT_PREFIX: ${RUSTFS_OBJECT_PREFIX:-portfolio}
+    depends_on:
+      db:
+        condition: service_healthy
+      rustfs:
+        condition: service_healthy
+    networks:
+      default:
+        aliases:
+          - crm-backend
+    ports:
+      - "${DOCKER_BIND_ADDRESS:-127.0.0.1}:${BACKEND_HOST_PORT:-4000}:${BACKEND_PORT}"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: runtime
+      args:
+        API_BASE_URL: http://crm-backend:${BACKEND_PORT}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?Set NEXT_PUBLIC_API_URL in .env.docker}
+        NEXT_PUBLIC_SITE_URL: ${FRONTEND_URL:?Set FRONTEND_URL in .env.docker}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:?Set NODE_ENV in .env.docker}
+      HOSTNAME: ${FRONTEND_HOSTNAME:-0.0.0.0}
+      PORT: ${FRONTEND_PORT:?Set FRONTEND_PORT in .env.docker}
+      API_BASE_URL: http://crm-backend:${BACKEND_PORT}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?Set NEXT_PUBLIC_API_URL in .env.docker}
+      NEXT_PUBLIC_SITE_URL: ${FRONTEND_URL:?Set FRONTEND_URL in .env.docker}
+    depends_on:
+      - backend
+    networks:
+      - default
+      - dokploy-network
+    ports:
+      - "${FRONTEND_BIND_ADDRESS:-127.0.0.1}:${FRONTEND_HOST_PORT:-3001}:${FRONTEND_PORT}"
+
+volumes:
+  postgres_data:
+  rustfs_data:
+
+networks:
+  default:
+  dokploy-network:
+    external: true

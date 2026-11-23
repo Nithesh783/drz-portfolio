@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",
+    "declaration": false,
+    "sourceMap": false,
+    "incremental": false
+  },
+  "include": [
+    "scripts/create-admin.ts",
+    "scripts/migrate-project-images.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

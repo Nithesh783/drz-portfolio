@@ -1,0 +1,342 @@
+.page {
+  display: grid;
+  min-height: 100vh;
+  padding: 32px;
+  place-items: center;
+  color: #172a32;
+  background:
+    radial-gradient(ellipse at 12% 18%, rgb(115 215 223 / 16%), transparent 32%),
+    #f2f6f7;
+  font-size: 15px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(400px, 0.92fr);
+  width: min(100%, 1050px);
+  min-height: 620px;
+  overflow: hidden;
+  border: 1px solid rgb(22 46 54 / 8%);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 24px 80px rgb(25 55 65 / 13%);
+}
+
+.intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 40px;
+  color: #eef8f9;
+  background:
+    radial-gradient(ellipse at 92% 92%, rgb(38 154 169 / 24%), transparent 39%),
+    #10272f;
+}
+
+.brand {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brandMark {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 13px;
+  color: #10313a;
+  background: #8ce2e9;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand strong {
+  font-size: 17px;
+  letter-spacing: -0.02em;
+}
+
+.brand small {
+  margin-top: 3px;
+  color: #9db1b7;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.introCopy {
+  z-index: 1;
+  max-width: 390px;
+  margin: auto 0;
+  padding: 36px 0 48px;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 15px;
+  color: #54c6d1;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+}
+
+.introCopy h1 {
+  max-width: 360px;
+  margin: 0;
+  font-size: clamp(36px, 5vw, 55px);
+  font-weight: 760;
+  letter-spacing: -0.055em;
+  line-height: 1.04;
+}
+
+.introCopy p {
+  max-width: 330px;
+  margin: 18px 0 0;
+  color: #b7c9cd;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  z-index: 1;
+  width: fit-content;
+  color: #c1d0d3;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.backArrow {
+  display: block;
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+
+.backLink:hover {
+  color: #fff;
+}
+
+.decorCircle {
+  position: absolute;
+  right: -120px;
+  bottom: -180px;
+  width: 380px;
+  height: 380px;
+  border: 1px solid rgb(139 226 233 / 16%);
+  border-radius: 50%;
+}
+
+.decorCircle::before,
+.decorCircle::after {
+  position: absolute;
+  border: 1px solid rgb(139 226 233 / 12%);
+  border-radius: 50%;
+  content: "";
+}
+
+.decorCircle::before {
+  inset: 34px;
+}
+
+.decorCircle::after {
+  inset: 70px;
+}
+
+.loginPanel {
+  display: grid;
+  padding: 48px;
+  place-items: center;
+}
+
+.loginCard {
+  width: min(100%, 365px);
+}
+
+.loginCard .eyebrow {
+  margin-bottom: 12px;
+  color: #168d9c;
+}
+
+.loginCard h2 {
+  margin: 0;
+  color: #1b3038;
+  font-size: 29px;
+  font-weight: 750;
+  letter-spacing: -0.045em;
+}
+
+.subtitle {
+  margin: 9px 0 0;
+  color: #829096;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.form {
+  display: grid;
+  gap: 18px;
+  margin-top: 30px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  color: #3d5158;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.field input {
+  width: 100%;
+  min-height: 47px;
+  padding: 0 13px;
+  border: 1px solid #dce5e7;
+  border-radius: 8px;
+  outline: none;
+  color: #1b3038;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.field input::placeholder {
+  color: #a7b2b6;
+}
+
+.field input:focus {
+  border-color: #58bfcc;
+  box-shadow: 0 0 0 3px rgb(4 164 189 / 12%);
+}
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  margin-top: 3px;
+  padding: 0 16px;
+  border: 1px solid #079bb0;
+  border-radius: 8px;
+  color: #fff;
+  background: #079bb0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  border-color: #087c8e;
+  background: #087c8e;
+}
+
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.submitButton span {
+  font-size: 17px;
+}
+
+.error {
+  margin: 0;
+  padding: 11px 12px;
+  border: 1px solid #f1d2d2;
+  border-radius: 7px;
+  color: #9e4141;
+  background: #fff6f6;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.securityNote {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 28px 0 0;
+  color: #96a3a7;
+  font-size: 10px;
+}
+
+.securityNote span {
+  color: #208b7c;
+  font-size: 15px;
+}
+
+@media (max-width: 760px) {
+  .page {
+    padding: 15px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    width: min(100%, 510px);
+    min-height: 0;
+    border-radius: 16px;
+  }
+
+  .intro {
+    min-height: 240px;
+    padding: 25px;
+  }
+
+  .introCopy {
+    margin: 36px 0 24px;
+    padding: 0;
+  }
+
+  .introCopy h1 {
+    max-width: 300px;
+    font-size: 38px;
+  }
+
+  .introCopy p {
+    margin-top: 11px;
+    font-size: 13px;
+  }
+
+  .backLink {
+    font-size: 11px;
+  }
+
+  .decorCircle {
+    right: -180px;
+    bottom: -230px;
+    width: 350px;
+    height: 350px;
+  }
+
+  .loginPanel {
+    padding: 36px 25px 31px;
+  }
+
+  .loginCard h2 {
+    font-size: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
